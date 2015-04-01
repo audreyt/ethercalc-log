@@ -2,11 +2,19 @@ import React from 'react'
 import App from './App'
 import request from 'superagent'
 
-var id = "test"
 var prefix = 'https://ethercalc.org/log/'
-request.get(prefix + id).end((err, res) => {
-    React.render(
-        <App id={id} revs={res.body} />,
-        document.getElementById('root')
-    );
-})
+var root = document.getElementById('root');
+function render (id, revs) {
+    React.render( <App id={id} revs={revs} onChange={onChange} />, root );
+}
+function load (id) {
+    render(id, []);
+    request.get(prefix + id).end((err, res) => {
+        if (err) { return; }
+        render(id, res.body);
+    })
+}
+function onChange(event) {
+    load(event.target.value);
+}
+load('test');
