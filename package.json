@@ -1,0 +1,31 @@
+{
+  "name": "ethercalc-log",
+  "version": "0.0.1",
+  "description": "EtherCalc Log Viewer",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/audreyt/ethercalc-log.git"
+  },
+  "keywords": [],
+  "author": "Audrey Tang <audreyt@audreyt.org>",
+  "license": "CC0",
+  "bugs": {
+    "url": "https://github.com/audreyt/ethercalc-log/issues"
+  },
+  "homepage": "https://github.com/audreyt/ethercalc-log",
+  "devDependencies": {
+    "babel-core": "^4.7.16",
+    "babel-loader": "^4.1.0",
+    "react-hot-loader": "^1.2.2",
+    "webpack": "^1.7.2",
+    "webpack-dev-server": "^1.7.0"
+  },
+  "dependencies": {
+    "moment": "^2.9.0",
+    "react": "^0.13.1",
+    "superagent": "^1.1.0"
+  }
+}
