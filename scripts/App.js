@@ -5,23 +5,43 @@ const inputStyle = {
     position: 'absolute',
     top: '5px',
     left: '5px',
+    fontSize: '15px',
+    fontWeight: 'bold',
     width: '140px',
     height: '20px'
 }
+const frameStyle = {
+    position: 'absolute',
+    border: 0,
+    top: '20px',
+    width: '100%',
+    height: '100%'
+}
+const panelStyle = {
+    position: 'absolute',
+    background: 'white',
+    top: '5px',
+    left: '5px',
+    bottom: '5px',
+    width: '150px'
+};
 const leftStyle = {
     position: 'absolute',
+    border: '0',
+    background: 'transparent',
     top: '35px',
-    left: '5px',
+    left: '0px',
     bottom: '5px',
     width: '150px'
 };
 const rightStyle = {
     position: 'absolute',
-    top: '0px',
-    left: '155px',
-    bottom: '0px',
+    top: '5px',
+    left: '160px',
+    bottom: '5px',
     right: '5px',
-    background: '#eee'
+    overflow: 'hidden',
+    background: '#f9f9f9'
 };
 export default class App extends React.Component {
     constructor(props) {
@@ -29,15 +49,29 @@ export default class App extends React.Component {
         return super(props);
     }
     render() {
+        var rev = this.props.revs.length ? this.state.rev : null;
         return (
             <div>
-                <input value={this.props.id} style={inputStyle} onChange={this.props.onChange} />
-                <RevList id="revs" revs={this.props.revs} onSelect={
-                    (rev) => this.setState({ rev: rev })
-                } />
-                <div style={rightStyle}>
-                    {this.state.rev}
-                    <input type="button" value="Restore this version" />
+                <div className="panel" style={panelStyle}>
+                    <input className="form-control" value={this.props.id} style={inputStyle} onChange={this.props.onChange} />
+                    <RevList id="revs" revs={this.props.revs} onSelect={
+                        (rev) => this.setState({ rev: rev })
+                    } />
+                </div>
+                <div className="panel" style={rightStyle}>
+                    <div className="panel-heading">
+                        <div className="panel-title">
+                            <b>&nbsp;{ rev ? moment.unix(rev.slice(0, -4)/1000).format(
+                                "YYYY-MM-DD HH:mm:ss Z"
+                            ) : '' }</b>
+                        </div>
+                    </div>
+                    { rev ? <iframe style={frameStyle} src={"https://ethercalc.org/log/"+this.props.id+"/"+this.state.rev} /> : '' }
+                    { rev ? <a className="btn btn-primary btn-fab btn-raised mdi-action-restore" style={
+                        { width: '28px', height: '28px', position: 'absolute', top: 0, right: 0 }
+                    } onClick={()=>{
+                        alert("Not yet implemented");
+                    }}/> : '' }
                 </div>
             </div>
         );
