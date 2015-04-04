@@ -65,7 +65,7 @@ class App extends React.Component {
         return (
             <div>
                 <div className="panel" style={panelStyle}>
-                    <input className="form-control" value={id} style={inputStyle} onChange={onChange} />
+                    <input placeholder="Enter Sheet ID" className="form-control" value={id} style={inputStyle} onChange={onChange} />
                     <RevList id="revs" revs={revs} onSelect={
                         (rev) => this.setState({ rev: rev })
                     } />
@@ -82,12 +82,16 @@ class App extends React.Component {
                     { rev ? <a className="btn btn-primary btn-fab btn-raised mdi-action-restore" style={
                         { width: '28px', height: '28px', position: 'absolute', top: 0, right: 0 }
                     } onClick={()=>{
-                        request.get("https://ethercalc.org/log/"+this.props.id+"/"+this.state.rev)
-                            .then((res) => {
-                                request.put("https://ethercalc.org/_/" + this.props.id).send({
-                                    snapshot: res.text
-                                }).then((res) => alert('Restored!'))
-                            })
+                        const target = prompt("Sheet ID to restore to:", this.props.id)
+                        if (target) {
+                            request.get("https://ethercalc.org/log/"+this.props.id+"/"+this.state.rev)
+                                .then((res) => {
+                                    request.put("https://ethercalc.org/_/" + encodeURIComponent(target))
+                                        .send({ snapshot: res.text })
+                                        .then(() => location.href = "https://ethercalc.org/"+encodeURIComponent(target))
+                                        .catch(() => alert("Restore failed"))
+                                })
+                        }
                     }}/> : '' }
                 </div>
             </div>
@@ -107,7 +111,7 @@ class RevList extends React.Component {
             <select value={this.state.selected} onChange={(e) => {
                 this.setState({ selected: e.target.value })
                 this.props.onSelect(e.target.value)
-            }} style={leftStyle} size={revs.length}>{revs.map(r => {
+            }} style={leftStyle} size={revs.length+1}>{revs.map(r => {
                 var tm = moment.unix(r.name.slice(0, -4)/1000)
                 var delta = r.size - prev
                 if (delta > 0) { delta = '+' + delta }
