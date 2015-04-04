@@ -55,7 +55,10 @@ class App extends React.Component {
         this.state = { rev: null }
     }
     componentWillMount() { this.props.setQueryParams(this.props) }
-    componentWillReceiveProps(nextProps) { this.props.setQueryParams(nextProps) }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.id == this.props.id) return
+        this.props.setQueryParams({ id: nextProps.id })
+    }
     render() {
         const {id, revs, onChange} = this.props;
         var rev = revs.length ? this.state.rev : null
@@ -124,7 +127,7 @@ export default Transmit.createContainer(App, {
     queries: {
         revs({id}) {
             if (!id) return new Promise((cb)=>cb([]))
-            return request.get(LogURL + id).then((res) => res.body)
+            return request.get(LogURL + id).then((res) => res.body).catch(()=>[])
         }
     }
 })

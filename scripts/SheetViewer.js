@@ -4,7 +4,10 @@ import request from 'superagent-bluebird-promise'
 
 class SheetViewer extends React.Component {
     componentWillMount() { this.props.setQueryParams(this.props) }
-    componentWillReceiveProps(nextProps) { this.props.setQueryParams(nextProps) }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.src == this.props.src) return
+        this.props.setQueryParams(nextProps)
+    }
     render() {
         const {style, sheet, src} = this.props;
         return <pre style={style}>{sheet}</pre>
