@@ -1,5 +1,6 @@
-import React from 'react';
-import moment from 'moment';
+import React from 'react'
+import moment from 'moment'
+import request from 'superagent'
 
 const inputStyle = {
     position: 'absolute',
@@ -70,7 +71,15 @@ export default class App extends React.Component {
                     { rev ? <a className="btn btn-primary btn-fab btn-raised mdi-action-restore" style={
                         { width: '28px', height: '28px', position: 'absolute', top: 0, right: 0 }
                     } onClick={()=>{
-                        alert("Not yet implemented");
+                        request.get("https://ethercalc.org/log/"+this.props.id+"/"+this.state.rev)
+                            .end((err, res) => {
+                                if (err) { return; }
+                                request.put("https://ethercalc.org/_/" + this.props.id).send({
+                                    snapshot: res.text
+                                }).end((err, res) => {
+                                    alert(err || 'Restored!');
+                                })
+                            })
                     }}/> : '' }
                 </div>
             </div>
@@ -94,7 +103,9 @@ class RevList extends React.Component {
                 var delta = r.size - prev;
                 if (delta > 0) { delta = '+' + delta };
                 prev = r.size;
-                return <option value={r.name} key={r.name} title={ tm.format() } >
+                return <option value={r.name} key={r.name} title={ tm.format() } style={
+                    { cursor: 'pointer' }
+                }>
                     { tm.fromNow() + ' (' + delta + ')' }
                 </option>
             }).reverse()}</select>
