@@ -66,7 +66,7 @@ class App extends React.Component {
             <div>
                 <div className="panel" style={panelStyle}>
                 <input ref={ (it) => {
-                    if (it) { React.findDOMNode(it).focus() }
+                    if (it && !id) { React.findDOMNode(it).focus() }
                     }} placeholder="Enter Sheet ID" className="form-control" value={id} style={inputStyle} onChange={onChange} />
                     <RevList id="revs" revs={revs} onSelect={
                         (rev) => this.setState({ rev: rev })
