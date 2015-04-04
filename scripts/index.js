@@ -1,20 +1,9 @@
 import React from 'react'
 import App from './App'
-import request from 'superagent'
+import request from 'superagent-bluebird-promise'
 
-var prefix = 'https://ethercalc.org/log/'
 var root = document.getElementById('root');
-function render (id, revs) {
-    React.render( <App id={id} revs={revs} onChange={onChange} />, root );
-}
 function load (id) {
-    render(id, []);
-    request.get(prefix + id).end((err, res) => {
-        if (err) { return; }
-        render(id, res.body);
-    })
+    React.render( <App id={id} onChange={(e) => load(e.target.value)} />, root );
 }
-function onChange(event) {
-    load(event.target.value);
-}
-load('test');
+load('test')
