@@ -75,13 +75,13 @@ class App extends React.Component {
                 <div className="panel" style={rightStyle}>
                     <div className="panel-heading">
                         <div className="panel-title">
-                            <b>&nbsp;{ rev ? moment.unix(rev.slice(0, -4)/1000).format(
+                            <b>&nbsp;{ rev && moment.unix(rev.slice(0, -4)/1000).format(
                                 "YYYY-MM-DD HH:mm:ss Z"
-                            ) : '' }</b>
+                            ) }</b>
                         </div>
                     </div>
-                    { rev ? <SheetViewer style={frameStyle} src={"https://ethercalc.org/log/"+this.props.id+"/"+this.state.rev} /> : '' }
-                    { rev ? <a className="btn btn-primary btn-fab btn-raised mdi-action-restore" style={
+                    { rev && <SheetViewer style={frameStyle} src={"https://ethercalc.org/log/"+this.props.id+"/"+this.state.rev} /> }
+                    { rev && <a className="btn btn-primary btn-fab btn-raised mdi-action-restore" style={
                         { width: '28px', height: '28px', position: 'absolute', top: 0, right: 0 }
                     } onClick={()=>{
                         const target = prompt("Sheet ID to restore to:", this.props.id)
@@ -94,7 +94,7 @@ class App extends React.Component {
                                         .catch(() => alert("Restore failed"))
                                 })
                         }
-                    }}/> : '' }
+                    }}/> }
                 </div>
             </div>
         )
